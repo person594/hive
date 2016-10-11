@@ -147,6 +147,55 @@ class hive:
 		#  :  0,0  :---:
 		#   \     /     \
 		#    '---'
+		white_hand = []
+		black_hand = []
+		for tile in self.hands:
+			if tile.color == 0:
+				white_hand += [tile] * self.hands[tile]
+			else:
+				black_hand += [tile] * self.hands[tile]
+		white_hand_chars = []
+		black_hand_chars = []
+		for i in range(5):
+			white_hand_chars.append([' '] * (8*len(white_hand) + 1))
+			black_hand_chars.append([' '] * (8*len(black_hand) + 1))
+		
+		for i, tile in enumerate(white_hand):
+			col = 8*i
+			white_hand_chars[2][col] = ':'
+			white_hand_chars[2][col+4] = tile.char()
+			white_hand_chars[2][col+8] = ':'
+			
+			white_hand_chars[1][col+1] = '/'
+			white_hand_chars[3][col+1] = '\\'
+			white_hand_chars[1][col+7] = '\\'
+			white_hand_chars[3][col+7] = '/'
+			
+			white_hand_chars[0][col+2:col+7] = '.---.'
+			white_hand_chars[4][col+2:col+7] = "'---'"
+		
+		white_hand_str = ""
+		for line in white_hand_chars:
+			white_hand_str += "".join(line) + '\n'
+			
+		for i, tile in enumerate(black_hand):
+			col = 8*i
+			black_hand_chars[2][col] = ':'
+			black_hand_chars[2][col+4] = tile.char()
+			black_hand_chars[2][col+8] = ':'
+			
+			black_hand_chars[1][col+1] = '/'
+			black_hand_chars[3][col+1] = '\\'
+			black_hand_chars[1][col+7] = '\\'
+			black_hand_chars[3][col+7] = '/'
+			
+			black_hand_chars[0][col+2:col+7] = '.---.'
+			black_hand_chars[4][col+2:col+7] = "'---'"
+			
+		black_hand_str = ""
+		for line in black_hand_chars:
+			black_hand_str += "".join(line) + '\n'
+		
 		main_str = ""
 		if len(self.tiles) > 0:
 			minC = minR = float('inf')
@@ -240,7 +289,7 @@ class hive:
 			
 			for line in chars:
 				main_str += ''.join(line) + '\n'
-		return main_str
+		return '\n'.join([black_hand_str, main_str, white_hand_str])
 				
 	def make_move(self, move):
 		if isinstance(move, place_tile):
@@ -414,6 +463,9 @@ class hive:
 			return "Game in progress"
 	
 	def evaluate(self):
+		big_number = 1000000
+		#kind of a hack to make early wins more applealing than later wins
+		turn_multiplier = ((self.ply + 2.0) / (self.ply + 1.0))
 		sign = 1 if self.ply%2 == 0 else -1
 		white_adj = 0
 		if self.queen_locs[0] is None:
@@ -423,7 +475,7 @@ class hive:
 				if loc in self.tiles:
 					white_adj += 1
 		if white_adj == 6:
-			white_adj = float('inf')
+			white_adj = big_number
 		black_adj = 0
 		if self.queen_locs[1] is None:
 			black_adj = 6
@@ -432,13 +484,9 @@ class hive:
 				if loc in self.tiles:
 					black_adj += 1
 		if black_adj == 6:
-			black_adj = float('inf')
+			black_adj = big_number
 		
-		#this takes care of the case where they are both infinity,
-		#as inf-inf is nan
-		if white_adj == black_adj:
-			return 0
-		return sign * (black_adj - white_adj)
+		return sign * turn_multiplier * (black_adj - white_adj)
 	
 	def alpha_beta(self, depth, alpha, beta):
 		if depth == 0 or self.is_game_over():
