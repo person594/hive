@@ -1,3 +1,5 @@
+big_number = 1000000
+
 class queen_bee:
 	def __init__(self, color):
 		self.color = color
@@ -210,8 +212,8 @@ class hive:
 		
 		main_str = ""
 		if len(self.tiles) > 0:
-			minC = minR = float('inf')
-			maxC = maxR = -float('inf')
+			minC = minR = big_number
+			maxC = maxR = -big_number
 			for loc,tile in self.tiles.items():
 				r = -loc[0] - 2*loc[1]
 				c = loc[0]
@@ -475,7 +477,6 @@ class hive:
 			return "Game in progress"
 	
 	def evaluate(self):
-		big_number = 1000000
 		#kind of a hack to make early wins more applealing than later wins
 		turn_multiplier = ((self.ply + 2.0) / (self.ply + 1.0))
 		sign = 1 if self.ply%2 == 0 else -1
@@ -514,7 +515,7 @@ class hive:
 		return alpha
 	
 	def move_search(self, depth):
-		beta = float('inf')
+		beta = 2*big_number
 		alpha = -beta
 		best_move = None
 		for move in self.get_moves():
