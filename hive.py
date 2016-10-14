@@ -442,7 +442,7 @@ class hive:
 		for loc, tile in self.tiles.items():
 			if tile.color == color:
 				if tile.covered is not None or self.one_hive_test(loc):
-					moves += tile.moves(self, loc)
+					moves += list(tile.moves(self, loc))
 		return moves
 	
 	def is_game_over(self):
