@@ -78,6 +78,7 @@ class spider:
 	def char(self):
 		return 'S' if self.color == 0 else 's'
 	def moves(self, hive, loc):
+		#this function is broken: if two possible paths intersect, they interfere with one another
 		visited = {loc}
 		#space...
 		last_frontier = {loc}
@@ -129,6 +130,17 @@ def adj(loc):
 	x, y = loc
 	return {(x+1, y), (x-1, y), (x, y+1), (x, y-1), (x+1, y-1), (x-1, y+1)}
 
+def prompt_list(l, prompt=':'):
+	for i, item in enumerate(l):
+		print ("%d: %s" % (i, str(item)))
+	n = None
+	while type(n) is not int or n >= len(l) or n < 0:
+		try:
+			n = input(prompt)
+		except:
+			pass
+	return l[n]
+	
 class hive:
 	def __init__(self):
 		self.tiles = {}
@@ -517,12 +529,7 @@ class hive:
 	def prompt_move(self):
 		print self.hive_string()
 		moves = self.get_moves()
-		for i, move in enumerate(moves):
-			print "%d: %s" % (i, str(move))
-		n = None
-		while type(n) is not int or n >= len(moves) or n < 0:
-			n = input(":")
-		self.make_move(moves[n])
+		self.make_move(prompt_list(moves))
 	
 	def comp_move(self, depth=3):
 		print self.hive_string()
@@ -545,8 +552,9 @@ class hive:
 
 h = hive()
 while not h.is_game_over():
-	h.prompt_move()
+	h.comp_move()
 	if h.is_game_over():
 		break
-	h.comp_move()
+	
+	h.prompt_move()
 print h.game_status()
