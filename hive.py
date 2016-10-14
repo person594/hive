@@ -566,6 +566,7 @@ class hive:
 class GameCanvas(GWTCanvas, MouseHandler):
 	def __init__(self):
 		GWTCanvas.__init__(self, 0, 0)
+		MouseHandler.__init__(self)
 		self.hive = hive()
 		#make human go first for now I guess
 		self.human_player = 0
@@ -588,8 +589,6 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		xmax = self.x + self.scale / 2.0
 		ymin = self.y - self.scale / (2.0 * ratio)
 		ymax = self.y + self.scale / (2.0 * ratio)
-		print (xmin, xmax)
-		print (ymin, ymax)
 		canv_x = self.width * (x - xmin) / (xmax - xmin)
 		canv_y = self.height * (y - ymin) / (ymax - ymin)
 		return (canv_x, canv_y)
@@ -599,7 +598,6 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		for i in range(6):
 			vx = math.cos(i * math.pi / 3.0)
 			vy = math.sin(i * math.pi / 3.0)
-			print self.canvas_coords(vx, vy)
 			vert_coords.append(self.canvas_coords(vx, vy))
 		
 		self.beginPath()
@@ -609,8 +607,8 @@ class GameCanvas(GWTCanvas, MouseHandler):
 			self.lineTo(vx, vy)
 		self.stroke()
 		
-		def onMouseDown(self, sender, x, y):
-			print (sender, x, y)
+	def onMouseDown(self, sender, x, y):
+		print (sender, x, y)
 		
 
 if __name__ == '__main__':
@@ -631,4 +629,3 @@ if __name__ == '__main__':
 		RootPanel().add(canvas)
 		canvas.draw_hex(0, 0)
 		
-v
