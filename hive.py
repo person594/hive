@@ -571,5 +571,7 @@ if __name__ == '__main__':
 		RootPanel().add(hw)
 		canvas = GWTCanvas()
 		RootPanel().add(canvas)
+		self.canvas.beginPath()
 		canvas.rect(0, 0, 300, 300)
+		self.canvas.stroke()
 		
