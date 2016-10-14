@@ -2,7 +2,7 @@ from pyjamas.ui.Button import Button
 from pyjamas.ui.RootPanel import RootPanel
 from pyjamas.ui.HTML import HTML
 from pyjamas import Window
-
+from pyjamas.Canvas.GWTCanvas import GWTCanvas
 
 big_number = 1000000
 
@@ -562,20 +562,14 @@ class hive:
 
 
 def greet(sender):
-    Window.alert("Hello, AJAX!")
+	Window.alert("Hello, AJAX!")
 
 if __name__ == '__main__':
-    b = Button("Click me", greet)
-    RootPanel().add(b)
-    hw = HTML("Hello <b>World</b>")
-    RootPanel().add(hw)
-'''
-h = hive()
-while not h.is_game_over():
-	h.comp_move()
-	if h.is_game_over():
-		break
-	
-	h.prompt_move()
-print h.game_status()
-'''
+		b = Button("Click me", greet)
+		RootPanel().add(b)
+		hw = HTML("Hello <b>World</b>")
+		RootPanel().add(hw)
+		canvas = GWTCanvas()
+		RootPanel().add(canvas)
+		canvas.rect(0, 0, 300, 300)
+		
