@@ -4,7 +4,7 @@ from pyjamas.ui.HTML import HTML
 from pyjamas import Window
 from pyjamas.Canvas.GWTCanvas import GWTCanvas
 
-import Math
+import math
 
 big_number = 1000000
 
@@ -572,7 +572,7 @@ class GameCanvas(GWTCanvas):
 		self.y = 0.0
 		
 		#how many hex-radii across the viewing area is
-		self.scale = 10.0
+		self.scale = 20.0
 		self.on_window_update()
 		
 	def on_window_update(self):
@@ -582,20 +582,23 @@ class GameCanvas(GWTCanvas):
 	
 	def canvas_coords(self, x, y):
 		ratio = float(self.width) / self.height
-			xmin = x - self.scale / 2.0
-			xmax = x + self.scale / 2.0
-			ymin = y - self.scale / (2.0 * ratio)
-			ymax = y + self.scale / (2.0 * ratio)
-		canv_x = self.width * (x - xmin) / xmax
-		canv_y = self.width * (y - xmin) / ymax
+		xmin = self.x - self.scale / 2.0
+		xmax = self.x + self.scale / 2.0
+		ymin = self.y - self.scale / (2.0 * ratio)
+		ymax = self.y + self.scale / (2.0 * ratio)
+		print (xmin, xmax)
+		print (ymin, ymax)
+		canv_x = self.width * (x - xmin) / (xmax - xmin)
+		canv_y = self.height * (y - ymin) / (ymax - ymin)
 		return (canv_x, canv_y)
 	
 	def draw_hex(self, x, y):
 		vert_coords = []
 		for i in range(6):
-			vx = math.cos(i * math.PI / 6.0)
-			vy = math.sin(i * math.PI / 6.0)
-			vert_coords.append(vx, vy)
+			vx = math.cos(i * math.pi / 3.0)
+			vy = math.sin(i * math.pi / 3.0)
+			print self.canvas_coords(vx, vy)
+			vert_coords.append(self.canvas_coords(vx, vy))
 		
 		self.beginPath()
 		self.setLineWidth(2)
