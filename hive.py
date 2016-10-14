@@ -162,6 +162,7 @@ class hive:
 		white_hand = []
 		black_hand = []
 		for tile in self.hands:
+			print tile
 			if tile.color == 0:
 				white_hand += [tile] * self.hands[tile]
 			else:
