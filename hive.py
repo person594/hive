@@ -578,6 +578,8 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		self.on_window_update()
 		self.addMouseListener(self)
 		
+		self.last_drag = None
+		
 	def on_window_update(self):
 		self.width = Window.getClientWidth()
 		self.height = Window.getClientHeight()
@@ -606,9 +608,29 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		for vx, vy in vert_coords:
 			self.lineTo(vx, vy)
 		self.stroke()
+	
+	def redraw(self):
+		self.draw_hex(0, 0)
 		
 	def onMouseDown(self, sender, x, y):
-		print (sender, x, y)
+		self.last_drag = self.canvas_coords(x, y)
+	
+	def onMouseUp(self, sender, x, y):
+		self.last_drag = None
+	
+	
+	def onMouseLeave(self, sender):
+		self.last_drag = None
+	
+	def onMouseMove(self, sender, x, y):
+		if self.last_drag is not None:
+			cx, cy = self.canvas_coords(x, y)
+			dx = cx - self.last_drag[0]
+			dy = cy - self.last_drag[1]
+			self.x -= dx
+			self.y -= dy
+			self.redraw()
+			
 		
 
 if __name__ == '__main__':
@@ -627,5 +649,5 @@ if __name__ == '__main__':
 		RootPanel().add(css)
 		canvas = GameCanvas()
 		RootPanel().add(canvas)
-		canvas.draw_hex(0, 0)
+		canvas.redraw()
 		
