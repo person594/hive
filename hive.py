@@ -94,7 +94,7 @@ class spider:
 			for loc2 in last_frontier:
 				for loc3 in adj(loc2):
 					if loc3 not in frontier and loc3 not in visited and loc3 not in hive.tiles and hive.slide_test(loc2, loc3) and hive.adj_test(loc, loc3):
-						for loc4 in adj(loc3) & adj(loc2):
+						for loc4 in adj(loc3).intersection(adj(loc2)):
 							if loc4 in hive.tiles:
 								frontier.add(loc3)
 								break
@@ -381,7 +381,7 @@ class hive:
 		return len(explored) == len(self.tiles) - 1
 	
 	def slide_test(self, loc1, loc2):
-		for l in adj(loc1) & adj(loc2):
+		for l in adj(loc1).intersection(adj(loc2)):
 			if l not in self.tiles:
 				return True
 		return False
