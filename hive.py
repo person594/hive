@@ -606,11 +606,21 @@ class GameCanvas(GWTCanvas):
 		
 
 if __name__ == '__main__':
-		b = Button("Click me", greet)
-		RootPanel().add(b)
-		hw = HTML("Hello <b>World</b>")
-		RootPanel().add(hw)
+		css = HTML('''
+		<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			border: 0;
+			overflow: hidden; /*  Disable scrollbars */
+			display: block;  /* No floating content on sides */
+		}
+		</style>
+		''')
+		RootPanel().add(css)
 		canvas = GameCanvas()
 		RootPanel().add(canvas)
 		canvas.draw_hex(0, 0)
 		
+v
