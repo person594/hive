@@ -3,6 +3,7 @@ from pyjamas.ui.RootPanel import RootPanel
 from pyjamas.ui.HTML import HTML
 from pyjamas import Window
 from pyjamas.Canvas.GWTCanvas import GWTCanvas
+from pyjamas.ui.MouseListener import MouseHandler
 
 import math
 
@@ -562,7 +563,7 @@ class hive:
 				tile = tile.covered
 		return count
 
-class GameCanvas(GWTCanvas):
+class GameCanvas(GWTCanvas, MouseHandler):
 	def __init__(self):
 		GWTCanvas.__init__(self, 0, 0)
 		self.hive = hive()
@@ -574,6 +575,7 @@ class GameCanvas(GWTCanvas):
 		#how many hex-radii across the viewing area is
 		self.scale = 20.0
 		self.on_window_update()
+		self.addMouseListener(self)
 		
 	def on_window_update(self):
 		self.width = Window.getClientWidth()
@@ -606,6 +608,9 @@ class GameCanvas(GWTCanvas):
 		for vx, vy in vert_coords:
 			self.lineTo(vx, vy)
 		self.stroke()
+		
+		def onMouseDown(self, sender, x, y):
+			print (sender, x, y)
 		
 
 if __name__ == '__main__':
