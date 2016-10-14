@@ -9,7 +9,11 @@ class queen_bee:
 	def tile_char(self):
 		return 'Q' if self.color == 0 else 'q'
 	def moves(self, hive, loc):
-		return {move_tile(loc, loc2) for loc2 in adj(loc) if loc2 not in hive.tiles and hive.slide_test(loc, loc2) and hive.adj_test(loc, loc2)}
+		m = set()
+		for loc2 in adj(loc):
+			if loc2 not in hive.tiles and hive.slide_test(loc, loc2) and hive.adj_test(loc, loc2):
+				m.add(move_tile(loc, loc2))
+		return m
 		
 class soldier_ant:
 	def __init__(self, color):
