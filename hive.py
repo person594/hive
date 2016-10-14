@@ -4,7 +4,7 @@ class queen_bee:
 		self.covered = None
 	def __repr__(self):
 		return ("White" if self.color == 0 else "Black") + " Queen Bee"
-	def char(self):
+	def tile_char(self):
 		return 'Q' if self.color == 0 else 'q'
 	def moves(self, hive, loc):
 		return {move_tile(loc, loc2) for loc2 in adj(loc) if loc2 not in hive.tiles and hive.slide_test(loc, loc2) and hive.adj_test(loc, loc2)}
@@ -15,7 +15,7 @@ class soldier_ant:
 		self.covered = None
 	def __repr__(self):
 		return ("White" if self.color == 0 else "Black") + " Soldier Ant"
-	def char(self):
+	def tile_char(self):
 		return 'A' if self.color == 0 else 'a'
 	def moves(self, hive, loc):
 		visited = {loc}
@@ -39,7 +39,7 @@ class beetle:
 		self.covered = covered
 	def __repr__(self):
 		return ("White" if self.color == 0 else "Black") + " Beetle"
-	def char(self):
+	def tile_char(self):
 		return 'B' if self.color == 0 else 'b'
 	def moves(self, hive, loc):
 		m = set()
@@ -56,7 +56,7 @@ class grasshopper:
 		self.covered = None
 	def __repr__(self):
 		return ("White" if self.color == 0 else "Black") + " Grasshopper"
-	def char(self):
+	def tile_char(self):
 		return 'G' if self.color == 0 else 'g'
 	def moves(self, hive, loc):
 		m = set()
@@ -75,7 +75,7 @@ class spider:
 		self.covered = None
 	def __repr__(self):
 		return ("White" if self.color == 0 else "Black") + " Spider"
-	def char(self):
+	def tile_char(self):
 		return 'S' if self.color == 0 else 's'
 	def moves(self, hive, loc):
 		#this function is broken: if two possible paths intersect, they interfere with one another
@@ -162,7 +162,6 @@ class hive:
 		white_hand = []
 		black_hand = []
 		for tile in self.hands:
-			print tile
 			if tile.color == 0:
 				white_hand += [tile] * self.hands[tile]
 			else:
@@ -176,7 +175,7 @@ class hive:
 		for i, tile in enumerate(white_hand):
 			col = 8*i
 			white_hand_chars[2][col] = ':'
-			white_hand_chars[2][col+4] = tile.char()
+			white_hand_chars[2][col+4] = tile.tile_char()
 			white_hand_chars[2][col+8] = ':'
 			
 			white_hand_chars[1][col+1] = '/'
@@ -194,7 +193,7 @@ class hive:
 		for i, tile in enumerate(black_hand):
 			col = 8*i
 			black_hand_chars[2][col] = ':'
-			black_hand_chars[2][col+4] = tile.char()
+			black_hand_chars[2][col+4] = tile.tile_char()
 			black_hand_chars[2][col+8] = ':'
 			
 			black_hand_chars[1][col+1] = '/'
@@ -266,7 +265,7 @@ class hive:
 					chars[line-2][col+6] = ':'
 				
 				chars[line-1][col+1] = '/'
-				chars[line-1][col+4] = tile.char()
+				chars[line-1][col+4] = tile.tile_char()
 				chars[line-1][col+7] = '\\'
 				
 				chars[line][col] = ':'
@@ -277,7 +276,7 @@ class hive:
 				cur = tile.covered
 				while len(stack_str) < 5:
 					if cur:
-						stack_str += cur.char()
+						stack_str += cur.tile_char()
 						cur = cur.covered
 					else:
 						stack_str += ' '
