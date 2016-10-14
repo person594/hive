@@ -33,7 +33,7 @@ class soldier_ant:
 				for loc3 in adj(loc2):
 					if loc3 not in frontier and loc3 not in visited and loc3 not in hive.tiles and hive.slide_test(loc2, loc3) and hive.adj_test(loc, loc3):
 						frontier.add(loc3)
-			visited |= frontier
+			visited.update(frontier)
 			last_frontier = frontier
 		visited -= {loc}
 		return map(lambda l:move_tile(loc, l), visited)
@@ -98,7 +98,7 @@ class spider:
 							if loc4 in hive.tiles:
 								frontier.add(loc3)
 								break
-			visited |= frontier
+			visited.update(frontier)
 			last_frontier = frontier
 			i+= 1
 		return map(lambda l:move_tile(loc, l), last_frontier)
@@ -373,10 +373,10 @@ class hive:
 		if not frontier:
 			return True
 		while len(frontier) > 0:
-			explored |= frontier
+			explored.update(frontier)
 			new_frontier = set()
 			for lc in frontier:
-				new_frontier |= neighbors(lc)
+				new_frontier.update(neighbors(lc))
 			frontier = new_frontier - explored
 		return len(explored) == len(self.tiles) - 1
 	
