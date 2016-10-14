@@ -1,3 +1,9 @@
+from pyjamas.ui.Button import Button
+from pyjamas.ui.RootPanel import RootPanel
+from pyjamas.ui.HTML import HTML
+from pyjamas import Window
+
+
 big_number = 1000000
 
 class queen_bee:
@@ -553,8 +559,17 @@ class hive:
 				count += 1
 				tile = tile.covered
 		return count
-			
 
+
+def greet(sender):
+    Window.alert("Hello, AJAX!")
+
+if __name__ == '__main__':
+    b = Button("Click me", greet)
+    RootPanel().add(b)
+    hw = HTML("Hello <b>World</b>")
+    RootPanel().add(hw)
+'''
 h = hive()
 while not h.is_game_over():
 	h.comp_move()
@@ -563,3 +578,4 @@ while not h.is_game_over():
 	
 	h.prompt_move()
 print h.game_status()
+'''
