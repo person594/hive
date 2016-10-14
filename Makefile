@@ -1,0 +1,2 @@
+build:
+	pyjsbuild hive.py
