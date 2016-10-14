@@ -4,6 +4,8 @@ from pyjamas.ui.HTML import HTML
 from pyjamas import Window
 from pyjamas.Canvas.GWTCanvas import GWTCanvas
 
+import Math
+
 big_number = 1000000
 
 class queen_bee:
@@ -568,13 +570,39 @@ class GameCanvas(GWTCanvas):
 		self.human_player = 0
 		self.x = 0.0
 		self.y = 0.0
-		self.scale = 1.0
+		
+		#how many hex-radii across the viewing area is
+		self.scale = 10.0
 		self.on_window_update()
 		
 	def on_window_update(self):
 		self.width = Window.getClientWidth()
 		self.height = Window.getClientHeight()
 		self.resize(self.width, self.height)
+	
+	def canvas_coords(self, x, y):
+		ratio = float(self.width) / self.height
+			xmin = x - self.scale / 2.0
+			xmax = x + self.scale / 2.0
+			ymin = y - self.scale / (2.0 * ratio)
+			ymax = y + self.scale / (2.0 * ratio)
+		canv_x = self.width * (x - xmin) / xmax
+		canv_y = self.width * (y - xmin) / ymax
+		return (canv_x, canv_y)
+	
+	def draw_hex(self, x, y):
+		vert_coords = []
+		for i in range(6):
+			vx = math.cos(i * math.PI / 6.0)
+			vy = math.sin(i * math.PI / 6.0)
+			vert_coords.append(vx, vy)
+		
+		self.beginPath()
+		self.setLineWidth(2)
+		self.moveTo(vert_coords[5][0], vert_coords[5][1])
+		for vx, vy in vert_coords:
+			self.lineTo(vx, vy)
+		self.stroke()
 		
 
 if __name__ == '__main__':
@@ -584,7 +612,5 @@ if __name__ == '__main__':
 		RootPanel().add(hw)
 		canvas = GameCanvas()
 		RootPanel().add(canvas)
-		canvas.beginPath()
-		canvas.rect(0, 0, 300, 300)
-		canvas.stroke()
+		canvas.draw_hex(0, 0)
 		
