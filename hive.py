@@ -560,18 +560,31 @@ class hive:
 				tile = tile.covered
 		return count
 
-
-def greet(sender):
-	Window.alert("Hello, AJAX!")
+class GameCanvas(GWTCanvas):
+	def __init__(self):
+		GWTCanvas.__init__(self, 0, 0)
+		self.hive = hive()
+		#make human go first for now I guess
+		self.human_player = 0
+		self.x = 0.0
+		self.y = 0.0
+		self.scale = 1.0
+		self.on_window_update()
+		
+	def on_window_update(self):
+		self.width = Window.getClientWidth()
+		self.height = Window.getClientHeight()
+		self.resize(self.width, self.height)
+		
 
 if __name__ == '__main__':
 		b = Button("Click me", greet)
 		RootPanel().add(b)
 		hw = HTML("Hello <b>World</b>")
 		RootPanel().add(hw)
-		canvas = GWTCanvas()
+		canvas = GameCanvas()
 		RootPanel().add(canvas)
-		self.canvas.beginPath()
+		canvas.beginPath()
 		canvas.rect(0, 0, 300, 300)
-		self.canvas.stroke()
+		canvas.stroke()
 		
