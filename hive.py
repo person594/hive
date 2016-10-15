@@ -585,22 +585,32 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		self.height = Window.getClientHeight()
 		self.resize(self.width, self.height)
 	
-	def canvas_coords(self, x, y):
+	def to_canvas_coords(self, x, y):
 		ratio = float(self.width) / self.height
 		xmin = self.x - self.scale / 2.0
 		xmax = self.x + self.scale / 2.0
 		ymin = self.y - self.scale / (2.0 * ratio)
 		ymax = self.y + self.scale / (2.0 * ratio)
-		canv_x = self.width * (x - xmin) / (xmax - xmin)
-		canv_y = self.height * (y - ymin) / (ymax - ymin)
-		return (canv_x, canv_y)
+		cx = self.width * (x - xmin) / (xmax - xmin)
+		cy = self.height * (y - ymin) / (ymax - ymin)
+		return (cx, cy)
+	
+	def from_canvas_coords(self, cx, cy):
+		ratio = float(self.width) / self.height
+		xmin = self.x - self.scale / 2.0
+		xmax = self.x + self.scale / 2.0
+		ymin = self.y - self.scale / (2.0 * ratio)
+		ymax = self.y + self.scale / (2.0 * ratio)
+		x = xmin +  (cx / float(self.width)) * (xmax - xmin)
+		y = ymin +  (cy / float(self.height)) * (ymax - ymin)
+		return (x, y)
 	
 	def draw_hex(self, x, y):
 		vert_coords = []
 		for i in range(6):
 			vx = math.cos(i * math.pi / 3.0)
 			vy = math.sin(i * math.pi / 3.0)
-			vert_coords.append(self.canvas_coords(vx, vy))
+			vert_coords.append(self.to_canvas_coords(vx, vy))
 		
 		self.beginPath()
 		self.setLineWidth(2)
@@ -613,7 +623,7 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		self.draw_hex(0, 0)
 		
 	def onMouseDown(self, sender, x, y):
-		self.last_drag = self.canvas_coords(x, y)
+		self.last_drag = self.from_canvas_coords(x, y)
 	
 	def onMouseUp(self, sender, x, y):
 		self.last_drag = None
@@ -624,7 +634,7 @@ class GameCanvas(GWTCanvas, MouseHandler):
 	
 	def onMouseMove(self, sender, x, y):
 		if self.last_drag is not None:
-			cx, cy = self.canvas_coords(x, y)
+			cx, cy = self.from_canvas_coords(x, y)
 			dx = cx - self.last_drag[0]
 			dy = cy - self.last_drag[1]
 			self.x -= dx
