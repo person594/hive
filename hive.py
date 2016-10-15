@@ -603,6 +603,7 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		ymax = self.y + self.scale / (2.0 * ratio)
 		x = xmin +  (cx / float(self.width)) * (xmax - xmin)
 		y = ymin +  (cy / float(self.height)) * (ymax - ymin)
+		print (x, y)
 		return (x, y)
 	
 	def draw_hex(self, x, y):
@@ -620,11 +621,11 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		self.stroke()
 	
 	def redraw(self):
-		self.clearRect(0, 0, self.width, self,height)
+		self.clear()
 		self.draw_hex(0, 0)
 		
 	def onMouseDown(self, sender, x, y):
-		self.last_drag = self.from_canvas_coords(x, y)
+		self.last_drag = (x, y)
 	
 	def onMouseUp(self, sender, x, y):
 		self.last_drag = None
@@ -635,13 +636,14 @@ class GameCanvas(GWTCanvas, MouseHandler):
 	
 	def onMouseMove(self, sender, x, y):
 		if self.last_drag is not None:
-			cx, cy = self.from_canvas_coords(x, y)
-			dx = cx - self.last_drag[0]
-			dy = cy - self.last_drag[1]
+			cx0, cy0 = self.from_canvas_coords(self.last_drag[0], self.last_drag[1])
+			cx1, cy1 = self.from_canvas_coords(x, y)
+			dx = cx1 - cx0
+			dy = cy1 - cy0
 			self.x -= dx
 			self.y -= dy
 			self.redraw()
-			self.last_drag = (cx, cy)
+			self.last_drag = (x, y)
 		
 
 if __name__ == '__main__':
