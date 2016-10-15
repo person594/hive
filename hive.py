@@ -620,6 +620,7 @@ class GameCanvas(GWTCanvas, MouseHandler):
 		self.stroke()
 	
 	def redraw(self):
+		self.clearRect(0, 0, self.width, self,height)
 		self.draw_hex(0, 0)
 		
 	def onMouseDown(self, sender, x, y):
