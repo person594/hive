@@ -622,7 +622,10 @@ class GameCanvas(GWTCanvas, MouseHandler):
 	
 	def redraw(self):
 		self.clear()
-		self.draw_hex(0, 0)
+		for loc, tile in self.hive.tiles.items():
+			x = loc[0] * 1.5
+			y = (loc[1] + loc[0] / 2.0) * -math.sqrt(3)
+			self.draw_hex(x, y)
 		
 	def onMouseDown(self, sender, x, y):
 		self.last_drag = (x, y)
@@ -663,4 +666,7 @@ if __name__ == '__main__':
 		canvas = GameCanvas()
 		RootPanel().add(canvas)
 		canvas.redraw()
-		
+
+h = hive()
+while not h.is_game_over():
+	h.comp_move()
