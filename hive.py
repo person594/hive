@@ -565,7 +565,7 @@ class hive:
 
 class GameCanvas(GWTCanvas, MouseHandler):
 	def __init__(self):
-		GWTCanvas.__init__(self, 0, 0)
+		GWTCanvas.__init__(self, 1, 1)
 		MouseHandler.__init__(self)
 		self.hive = hive()
 		#make human go first for now I guess
@@ -630,7 +630,7 @@ class GameCanvas(GWTCanvas, MouseHandler):
 			self.x -= dx
 			self.y -= dy
 			self.redraw()
-			
+			self.last_drag = (cx, cy)
 		
 
 if __name__ == '__main__':
